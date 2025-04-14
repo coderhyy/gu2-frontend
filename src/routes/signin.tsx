@@ -10,9 +10,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useUserStore } from "@/stores/user-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { Facebook, Github, LoaderCircle, PartyPopper } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -28,6 +29,9 @@ const formSchema = z.object({
 });
 
 function SignInPage() {
+  const { setAuthData } = useUserStore();
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
       email: "",
@@ -41,8 +45,10 @@ function SignInPage() {
     onError: () => {
       toast.error("Login failed");
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      setAuthData(data);
       toast.success("Login successful");
+      router.navigate({ to: "/" });
     },
   });
 

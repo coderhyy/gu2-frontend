@@ -10,7 +10,7 @@ export interface RegisterArgs {
   membershipType?: string;
   name: string;
   password: string;
-  phone: string;
+  phone?: string;
 }
 
 export interface User {
