@@ -13,14 +13,12 @@ export interface Member {
 }
 
 export interface Player {
-  coach_id: number;
   member: Member;
-  member_id: number;
   performance_data: string;
   player_id: number;
-  position?: string;
-  skill_level?: string;
-  team_name?: string;
+  position: string;
+  skill_level: string;
+  team_name: string;
 }
 
 export type PlayerPaginationArgs = {

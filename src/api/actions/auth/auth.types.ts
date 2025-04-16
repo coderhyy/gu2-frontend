@@ -15,7 +15,7 @@ export interface RegisterArgs {
 
 export interface User {
   email: string;
-  id: string;
+  id: number;
   name: string;
   role: Role;
 }

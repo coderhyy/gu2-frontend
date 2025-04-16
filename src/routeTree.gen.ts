@@ -15,6 +15,7 @@ import { Route as SignupImport } from './routes/signup'
 import { Route as SigninImport } from './routes/signin'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as TrainingManagementIndexImport } from './routes/training-management/index'
 import { Route as PlayerManageIndexImport } from './routes/player-manage/index'
 
 // Create/Update Routes
@@ -40,6 +41,12 @@ const AboutRoute = AboutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TrainingManagementIndexRoute = TrainingManagementIndexImport.update({
+  id: '/training-management/',
+  path: '/training-management/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -88,6 +95,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerManageIndexImport
       parentRoute: typeof rootRoute
     }
+    '/training-management/': {
+      id: '/training-management/'
+      path: '/training-management'
+      fullPath: '/training-management'
+      preLoaderRoute: typeof TrainingManagementIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -99,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/player-manage': typeof PlayerManageIndexRoute
+  '/training-management': typeof TrainingManagementIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -107,6 +122,7 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/player-manage': typeof PlayerManageIndexRoute
+  '/training-management': typeof TrainingManagementIndexRoute
 }
 
 export interface FileRoutesById {
@@ -116,14 +132,34 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/player-manage/': typeof PlayerManageIndexRoute
+  '/training-management/': typeof TrainingManagementIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/signin' | '/signup' | '/player-manage'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/signin'
+    | '/signup'
+    | '/player-manage'
+    | '/training-management'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/signin' | '/signup' | '/player-manage'
-  id: '__root__' | '/' | '/about' | '/signin' | '/signup' | '/player-manage/'
+  to:
+    | '/'
+    | '/about'
+    | '/signin'
+    | '/signup'
+    | '/player-manage'
+    | '/training-management'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/signin'
+    | '/signup'
+    | '/player-manage/'
+    | '/training-management/'
   fileRoutesById: FileRoutesById
 }
 
@@ -133,6 +169,7 @@ export interface RootRouteChildren {
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
   PlayerManageIndexRoute: typeof PlayerManageIndexRoute
+  TrainingManagementIndexRoute: typeof TrainingManagementIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -141,6 +178,7 @@ const rootRouteChildren: RootRouteChildren = {
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   PlayerManageIndexRoute: PlayerManageIndexRoute,
+  TrainingManagementIndexRoute: TrainingManagementIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -157,7 +195,8 @@ export const routeTree = rootRoute
         "/about",
         "/signin",
         "/signup",
-        "/player-manage/"
+        "/player-manage/",
+        "/training-management/"
       ]
     },
     "/": {
@@ -174,6 +213,9 @@ export const routeTree = rootRoute
     },
     "/player-manage/": {
       "filePath": "player-manage/index.tsx"
+    },
+    "/training-management/": {
+      "filePath": "training-management/index.tsx"
     }
   }
 }

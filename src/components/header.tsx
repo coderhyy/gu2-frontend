@@ -39,9 +39,9 @@ export function Header() {
         </Link>
         <Link
           className="[&.active]:font-bold [&.active]:text-primary"
-          to="/about"
+          to="/training-management"
         >
-          About
+          Training Management
         </Link>
       </div>
 
