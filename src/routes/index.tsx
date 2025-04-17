@@ -105,7 +105,7 @@ function Index() {
           <CardFooter>
             <Link
               className="flex items-center text-primary text-sm font-medium"
-              to="#"
+              to="/"
             >
               View Game Data <ArrowRight className="ml-1 h-4 w-4" />
             </Link>

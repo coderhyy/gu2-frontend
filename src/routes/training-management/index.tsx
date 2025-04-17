@@ -69,7 +69,7 @@ function TrainingManagementPage() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
-      coach_id: authData?.user.coach.coach_id,
+      coach_id: authData?.user.coach?.coach_id,
       player_ids: [],
       training_date: new Date(),
       training_details: "",
