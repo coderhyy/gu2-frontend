@@ -1,3 +1,4 @@
+import { getPlayersQueryOptions } from "@/api/actions/player/player.options";
 import {
   deleteTrainingByIdRequest,
   updateTrainingByIdRequest,
@@ -6,6 +7,7 @@ import {
   CreateTrainingDto,
   Training,
 } from "@/api/actions/training/training.types";
+import { MultiSelect } from "@/components/multi-select";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -33,7 +35,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
@@ -43,9 +45,15 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
+  coach_id: z.number(),
+  player_ids: z.array(z.string()).optional(),
   training_date: z.date().optional(),
-  training_details: z.string().optional(),
-  training_location: z.string().optional(),
+  training_details: z
+    .string()
+    .min(1, { message: "Training details is required" }),
+  training_location: z
+    .string()
+    .min(1, { message: "Training location is required" }),
 });
 
 function EditTrainingCell({ training }: { training: Training }) {
@@ -53,6 +61,10 @@ function EditTrainingCell({ training }: { training: Training }) {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const { data: players } = useQuery(
+    getPlayersQueryOptions({ page: 1, size: 100 })
+  );
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: (data: CreateTrainingDto) =>
@@ -81,6 +93,10 @@ function EditTrainingCell({ training }: { training: Training }) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
+      coach_id: training.coach.coach_id,
+      player_ids: training.training_records.map((record) =>
+        record.player.player_id.toString()
+      ),
       training_date: training.training_date
         ? new Date(training.training_date)
         : undefined,
@@ -184,6 +200,30 @@ function EditTrainingCell({ training }: { training: Training }) {
                 )}
               />
 
+              <FormField
+                control={form.control}
+                name="player_ids"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Players</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        onChange={field.onChange}
+                        options={
+                          players?.data.map((player) => ({
+                            label: player.member.name,
+                            value: player.player_id.toString(),
+                          })) || []
+                        }
+                        placeholder="Select players"
+                        selected={field.value || []}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               <Button className="w-full" disabled={isPending} type="submit">
                 {isPending ? (
                   <>
@@ -256,6 +296,8 @@ export const columns: ColumnDef<Training>[] = [
       const training = row.original;
       return <EditTrainingCell training={training} />;
     },
+
+    header: "Actions",
     id: "actions",
   },
 ];

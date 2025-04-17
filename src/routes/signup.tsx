@@ -1,5 +1,5 @@
 import { registerRequest } from "@/api/actions/auth/auth.requests";
-import { Role } from "@/api/actions/auth/auth.types";
+import { MemberType } from "@/api/actions/auth/auth.types";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -37,11 +37,15 @@ const formSchema = z
     contact_info: z.string().optional(),
     date_of_birth: z.string().optional(),
     email: z.string().email("pls enter a valid email"),
+    member_type: z.enum([
+      MemberType.COACH,
+      MemberType.PLAYER,
+      MemberType.MEMBER,
+    ]),
     name: z.string().min(1, "pls enter your name"),
     password: z.string().min(6, "pls enter a valid password"),
     phone: z.string().optional(),
     position: z.string().optional(),
-    role: z.enum([Role.COACH, Role.PLAYER, Role.MEMBER]),
     skill_level: z.string().optional(),
     team_name: z.string().optional(),
   })
@@ -59,11 +63,11 @@ function RouteComponent() {
       confirmPassword: "",
       contact_info: "",
       email: "",
+      member_type: MemberType.MEMBER,
       name: "",
       password: "",
       phone: "",
       position: "",
-      role: Role.MEMBER,
       skill_level: "",
       team_name: "",
     },
@@ -227,19 +231,19 @@ function RouteComponent() {
 
           <FormField
             control={form.control}
-            name="role"
+            name="member_type"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Role</FormLabel>
+                <FormLabel>Member Type</FormLabel>
                 <FormControl>
                   <Select onValueChange={field.onChange}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select Role" />
+                      <SelectValue placeholder="Select Member Type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value={Role.COACH}>Coach</SelectItem>
-                      <SelectItem value={Role.PLAYER}>Player</SelectItem>
-                      <SelectItem value={Role.MEMBER}>Member</SelectItem>
+                      <SelectItem value={MemberType.COACH}>Coach</SelectItem>
+                      <SelectItem value={MemberType.PLAYER}>Player</SelectItem>
+                      <SelectItem value={MemberType.MEMBER}>Member</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

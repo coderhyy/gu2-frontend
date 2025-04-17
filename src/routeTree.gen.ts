@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as SignupImport } from './routes/signup'
 import { Route as SigninImport } from './routes/signin'
+import { Route as ProfileImport } from './routes/profile'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as TrainingManagementIndexImport } from './routes/training-management/index'
@@ -29,6 +30,12 @@ const SignupRoute = SignupImport.update({
 const SigninRoute = SigninImport.update({
   id: '/signin',
   path: '/signin',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ProfileRoute = ProfileImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -74,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileImport
+      parentRoute: typeof rootRoute
+    }
     '/signin': {
       id: '/signin'
       path: '/signin'
@@ -110,6 +124,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/profile': typeof ProfileRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/player-manage': typeof PlayerManageIndexRoute
@@ -119,6 +134,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/profile': typeof ProfileRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/player-manage': typeof PlayerManageIndexRoute
@@ -129,6 +145,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/profile': typeof ProfileRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/player-manage/': typeof PlayerManageIndexRoute
@@ -140,6 +157,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/profile'
     | '/signin'
     | '/signup'
     | '/player-manage'
@@ -148,6 +166,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/profile'
     | '/signin'
     | '/signup'
     | '/player-manage'
@@ -156,6 +175,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/profile'
     | '/signin'
     | '/signup'
     | '/player-manage/'
@@ -166,6 +186,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ProfileRoute: typeof ProfileRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
   PlayerManageIndexRoute: typeof PlayerManageIndexRoute
@@ -175,6 +196,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ProfileRoute: ProfileRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   PlayerManageIndexRoute: PlayerManageIndexRoute,
@@ -193,6 +215,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
+        "/profile",
         "/signin",
         "/signup",
         "/player-manage/",
@@ -204,6 +227,9 @@ export const routeTree = rootRoute
     },
     "/about": {
       "filePath": "about.tsx"
+    },
+    "/profile": {
+      "filePath": "profile.tsx"
     },
     "/signin": {
       "filePath": "signin.tsx"

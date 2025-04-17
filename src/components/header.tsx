@@ -61,8 +61,11 @@ export function Header() {
             <DropdownMenuContent>
               <DropdownMenuLabel>{authData.user.email}</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.navigate({ to: "/profile" })}
+              >
+                Profile
+              </DropdownMenuItem>
               <DropdownMenuItem
                 className="text-red-500 focus:text-red-500"
                 onClick={logout}

@@ -1,4 +1,4 @@
-import { Role } from "../auth/auth.types";
+import { MemberType } from "../auth/auth.types";
 
 export interface Member {
   contact_info: string;
@@ -9,7 +9,7 @@ export interface Member {
   password: string;
   phone: string;
   registration_date: string;
-  role: Role;
+  role: MemberType;
 }
 
 export interface Player {

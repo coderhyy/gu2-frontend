@@ -30,12 +30,13 @@ import {
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/user-store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { format } from "date-fns";
 import { CalendarIcon, LoaderCircle } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 import { columns } from "./-components/columns";
@@ -58,6 +59,7 @@ const formSchema = z.object({
 
 function TrainingManagementPage() {
   const { authData } = useUserStore();
+  const queryClient = useQueryClient();
   const { data } = useQuery(getTrainingsQueryOptions({ page: 1, size: 100 }));
   const { data: players } = useQuery(
     getPlayersQueryOptions({ page: 1, size: 100 })
@@ -67,7 +69,7 @@ function TrainingManagementPage() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
-      coach_id: authData?.user.id,
+      coach_id: authData?.user.coach.coach_id,
       player_ids: [],
       training_date: new Date(),
       training_details: "",
@@ -78,6 +80,15 @@ function TrainingManagementPage() {
 
   const { isPending, mutateAsync: createTraining } = useMutation({
     mutationFn: createTrainingRequest,
+    onSettled: () => {
+      queryClient.invalidateQueries(
+        getTrainingsQueryOptions({ page: 1, size: 100 })
+      );
+    },
+    onSuccess: () => {
+      toast.success("Training created successfully");
+      setIsCreateTrainingOpen(false);
+    },
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {

@@ -166,6 +166,7 @@ export const columns: ColumnDef<Player>[] = [
       const player = row.original;
       return <EditPlayerCell player={player} />;
     },
+    header: "Actions",
     id: "actions",
   },
 ];
