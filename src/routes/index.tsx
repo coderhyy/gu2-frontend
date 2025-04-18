@@ -93,7 +93,7 @@ function Index() {
             <Trophy className="h-8 w-8 text-primary mb-2" />
             <CardTitle>Game Results</CardTitle>
             <CardDescription className="line-clamp-2">
-              Record and analyze game data
+              Record and analyze game data and statistics
             </CardDescription>
           </CardHeader>
           <CardContent>
