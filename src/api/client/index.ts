@@ -29,7 +29,8 @@ axiosInstance.interceptors.response.use(
   },
   function (error) {
     if (error.response.data.code === 401) {
-      toast.error("Unauthorized");
+      toast.error("Unauthorized. Please login again.");
+      useUserStore.getState().setAuthData(null);
     }
     return Promise.reject(error);
   }
