@@ -244,6 +244,12 @@ function RouteComponent() {
                       <SelectItem value={MemberType.COACH}>Coach</SelectItem>
                       <SelectItem value={MemberType.PLAYER}>Player</SelectItem>
                       <SelectItem value={MemberType.MEMBER}>Member</SelectItem>
+                      <SelectItem value={MemberType.CHAIRMAN}>
+                        Chairman
+                      </SelectItem>
+                      <SelectItem value={MemberType.EVENT_ASSISTANT}>
+                        Event Assistant
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>
