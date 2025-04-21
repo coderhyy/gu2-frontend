@@ -33,7 +33,6 @@ const formSchema = z.object({
 });
 
 function EditPlayerCell({ player }: { player: Player }) {
-  console.log(player);
   const queryClient = useQueryClient();
 
   const [isOpen, setIsOpen] = useState(false);

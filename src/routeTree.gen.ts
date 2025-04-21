@@ -17,7 +17,9 @@ import { Route as ProfileImport } from './routes/profile'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as TrainingManagementIndexImport } from './routes/training-management/index'
+import { Route as TournamentManagementIndexImport } from './routes/tournament-management/index'
 import { Route as PlayerManageIndexImport } from './routes/player-manage/index'
+import { Route as ConsentFormIndexImport } from './routes/consent-form/index'
 
 // Create/Update Routes
 
@@ -57,9 +59,21 @@ const TrainingManagementIndexRoute = TrainingManagementIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const TournamentManagementIndexRoute = TournamentManagementIndexImport.update({
+  id: '/tournament-management/',
+  path: '/tournament-management/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PlayerManageIndexRoute = PlayerManageIndexImport.update({
   id: '/player-manage/',
   path: '/player-manage/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ConsentFormIndexRoute = ConsentFormIndexImport.update({
+  id: '/consent-form/',
+  path: '/consent-form/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -102,11 +116,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
+    '/consent-form/': {
+      id: '/consent-form/'
+      path: '/consent-form'
+      fullPath: '/consent-form'
+      preLoaderRoute: typeof ConsentFormIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/player-manage/': {
       id: '/player-manage/'
       path: '/player-manage'
       fullPath: '/player-manage'
       preLoaderRoute: typeof PlayerManageIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/tournament-management/': {
+      id: '/tournament-management/'
+      path: '/tournament-management'
+      fullPath: '/tournament-management'
+      preLoaderRoute: typeof TournamentManagementIndexImport
       parentRoute: typeof rootRoute
     }
     '/training-management/': {
@@ -127,7 +155,9 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/consent-form': typeof ConsentFormIndexRoute
   '/player-manage': typeof PlayerManageIndexRoute
+  '/tournament-management': typeof TournamentManagementIndexRoute
   '/training-management': typeof TrainingManagementIndexRoute
 }
 
@@ -137,7 +167,9 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/consent-form': typeof ConsentFormIndexRoute
   '/player-manage': typeof PlayerManageIndexRoute
+  '/tournament-management': typeof TournamentManagementIndexRoute
   '/training-management': typeof TrainingManagementIndexRoute
 }
 
@@ -148,7 +180,9 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
+  '/consent-form/': typeof ConsentFormIndexRoute
   '/player-manage/': typeof PlayerManageIndexRoute
+  '/tournament-management/': typeof TournamentManagementIndexRoute
   '/training-management/': typeof TrainingManagementIndexRoute
 }
 
@@ -160,7 +194,9 @@ export interface FileRouteTypes {
     | '/profile'
     | '/signin'
     | '/signup'
+    | '/consent-form'
     | '/player-manage'
+    | '/tournament-management'
     | '/training-management'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -169,7 +205,9 @@ export interface FileRouteTypes {
     | '/profile'
     | '/signin'
     | '/signup'
+    | '/consent-form'
     | '/player-manage'
+    | '/tournament-management'
     | '/training-management'
   id:
     | '__root__'
@@ -178,7 +216,9 @@ export interface FileRouteTypes {
     | '/profile'
     | '/signin'
     | '/signup'
+    | '/consent-form/'
     | '/player-manage/'
+    | '/tournament-management/'
     | '/training-management/'
   fileRoutesById: FileRoutesById
 }
@@ -189,7 +229,9 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
+  ConsentFormIndexRoute: typeof ConsentFormIndexRoute
   PlayerManageIndexRoute: typeof PlayerManageIndexRoute
+  TournamentManagementIndexRoute: typeof TournamentManagementIndexRoute
   TrainingManagementIndexRoute: typeof TrainingManagementIndexRoute
 }
 
@@ -199,7 +241,9 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
+  ConsentFormIndexRoute: ConsentFormIndexRoute,
   PlayerManageIndexRoute: PlayerManageIndexRoute,
+  TournamentManagementIndexRoute: TournamentManagementIndexRoute,
   TrainingManagementIndexRoute: TrainingManagementIndexRoute,
 }
 
@@ -218,7 +262,9 @@ export const routeTree = rootRoute
         "/profile",
         "/signin",
         "/signup",
+        "/consent-form/",
         "/player-manage/",
+        "/tournament-management/",
         "/training-management/"
       ]
     },
@@ -237,8 +283,14 @@ export const routeTree = rootRoute
     "/signup": {
       "filePath": "signup.tsx"
     },
+    "/consent-form/": {
+      "filePath": "consent-form/index.tsx"
+    },
     "/player-manage/": {
       "filePath": "player-manage/index.tsx"
+    },
+    "/tournament-management/": {
+      "filePath": "tournament-management/index.tsx"
     },
     "/training-management/": {
       "filePath": "training-management/index.tsx"

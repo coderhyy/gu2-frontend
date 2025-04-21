@@ -91,23 +91,24 @@ function Index() {
         <Card>
           <CardHeader>
             <Trophy className="h-8 w-8 text-primary mb-2" />
-            <CardTitle>Game Results</CardTitle>
+            <CardTitle>Tournament Management</CardTitle>
             <CardDescription className="line-clamp-2">
-              Record and analyze game data and statistics
+              Manage tournament data and statistics and create tournament
+              schedule
             </CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground line-clamp-4">
-              Integrate game data and provide in-depth analysis to help coaches
-              and athletes develop more effective strategies.
+              Manage tournament data and statistics and create tournament
+              schedule and manage tournament data and statistics
             </p>
           </CardContent>
           <CardFooter>
             <Link
               className="flex items-center text-primary text-sm font-medium"
-              to="/"
+              to="/tournament-management"
             >
-              View Game Data <ArrowRight className="ml-1 h-4 w-4" />
+              View Tournament Data <ArrowRight className="ml-1 h-4 w-4" />
             </Link>
           </CardFooter>
         </Card>

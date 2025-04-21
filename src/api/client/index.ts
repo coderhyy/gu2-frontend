@@ -32,6 +32,9 @@ axiosInstance.interceptors.response.use(
       toast.error("Unauthorized. Please login again.");
       useUserStore.getState().setAuthData(null);
     }
+    if (error.response.data.code === 403) {
+      toast.error("Forbidden. Please contact support.");
+    }
     return Promise.reject(error);
   }
 );

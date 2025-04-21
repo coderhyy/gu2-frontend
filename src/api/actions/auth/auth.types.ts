@@ -1,7 +1,10 @@
 import { Coach } from "../coach/coach.types";
 
 export enum MemberType {
+  ADMIN = "admin",
+  CHAIRMAN = "chairman",
   COACH = "coach",
+  EVENT_ASSISTANT = "event_assistant",
   MEMBER = "member",
   PLAYER = "player",
 }
