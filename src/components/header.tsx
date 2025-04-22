@@ -29,49 +29,61 @@ export function Header() {
       <Cat />
 
       <div className="flex gap-2">
-        <Link className="[&.active]:font-bold [&.active]:text-primary" to="/">
-          Home
-        </Link>
+        <Button asChild variant="outline">
+          <Link className="[&.active]:font-bold [&.active]:text-primary" to="/">
+            Home
+          </Link>
+        </Button>
 
         {(authData?.user.member_type === MemberType.ADMIN ||
           authData?.user.member_type === MemberType.COACH) && (
-          <Link
-            className="[&.active]:font-bold [&.active]:text-primary"
-            to="/teams"
-          >
-            Teams Management
-          </Link>
+          <Button asChild variant="outline">
+            <Link
+              className="[&.active]:font-bold [&.active]:text-primary"
+              to="/teams"
+            >
+              Teams Management
+            </Link>
+          </Button>
         )}
 
         {(authData?.user.member_type === MemberType.ADMIN ||
           authData?.user.member_type === MemberType.COACH) && (
           <>
-            <Link
-              className="[&.active]:font-bold [&.active]:text-primary"
-              to="/player-manage"
-            >
-              Player Management
-            </Link>
-            <Link
-              className="[&.active]:font-bold [&.active]:text-primary"
-              to="/training-management"
-            >
-              Training Management
-            </Link>
+            <Button asChild variant="outline">
+              <Link
+                className="[&.active]:font-bold [&.active]:text-primary"
+                to="/player-manage"
+              >
+                Player Management
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link
+                className="[&.active]:font-bold [&.active]:text-primary"
+                to="/training-management"
+              >
+                Training Management
+              </Link>
+            </Button>
           </>
         )}
-        <Link
-          className="[&.active]:font-bold [&.active]:text-primary"
-          to="/tournament-management"
-        >
-          Tournament Management
-        </Link>
-        <Link
-          className="[&.active]:font-bold [&.active]:text-primary"
-          to="/consent-form"
-        >
-          Consent Form
-        </Link>
+        <Button asChild variant="outline">
+          <Link
+            className="[&.active]:font-bold [&.active]:text-primary"
+            to="/tournament-management"
+          >
+            Tournament Management
+          </Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link
+            className="[&.active]:font-bold [&.active]:text-primary"
+            to="/consent-form"
+          >
+            Consent Form
+          </Link>
+        </Button>
       </div>
 
       <div className="flex gap-2">
