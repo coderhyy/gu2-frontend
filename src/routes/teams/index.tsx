@@ -292,7 +292,7 @@ function RouteComponent() {
           </DialogContent>
         </Dialog>
       </div>
-      <DataTable columns={columns} data={data.data || []} />
+      <DataTable columns={columns} data={data?.data || []} />
     </div>
   );
 }
