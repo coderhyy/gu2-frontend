@@ -18,6 +18,7 @@ import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
 import { Route as TrainingManagementIndexImport } from './routes/training-management/index'
 import { Route as TournamentManagementIndexImport } from './routes/tournament-management/index'
+import { Route as TeamsIndexImport } from './routes/teams/index'
 import { Route as PlayerManageIndexImport } from './routes/player-manage/index'
 import { Route as ConsentFormIndexImport } from './routes/consent-form/index'
 
@@ -62,6 +63,12 @@ const TrainingManagementIndexRoute = TrainingManagementIndexImport.update({
 const TournamentManagementIndexRoute = TournamentManagementIndexImport.update({
   id: '/tournament-management/',
   path: '/tournament-management/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TeamsIndexRoute = TeamsIndexImport.update({
+  id: '/teams/',
+  path: '/teams/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -130,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayerManageIndexImport
       parentRoute: typeof rootRoute
     }
+    '/teams/': {
+      id: '/teams/'
+      path: '/teams'
+      fullPath: '/teams'
+      preLoaderRoute: typeof TeamsIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/tournament-management/': {
       id: '/tournament-management/'
       path: '/tournament-management'
@@ -157,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/consent-form': typeof ConsentFormIndexRoute
   '/player-manage': typeof PlayerManageIndexRoute
+  '/teams': typeof TeamsIndexRoute
   '/tournament-management': typeof TournamentManagementIndexRoute
   '/training-management': typeof TrainingManagementIndexRoute
 }
@@ -169,6 +184,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/consent-form': typeof ConsentFormIndexRoute
   '/player-manage': typeof PlayerManageIndexRoute
+  '/teams': typeof TeamsIndexRoute
   '/tournament-management': typeof TournamentManagementIndexRoute
   '/training-management': typeof TrainingManagementIndexRoute
 }
@@ -182,6 +198,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/consent-form/': typeof ConsentFormIndexRoute
   '/player-manage/': typeof PlayerManageIndexRoute
+  '/teams/': typeof TeamsIndexRoute
   '/tournament-management/': typeof TournamentManagementIndexRoute
   '/training-management/': typeof TrainingManagementIndexRoute
 }
@@ -196,6 +213,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/consent-form'
     | '/player-manage'
+    | '/teams'
     | '/tournament-management'
     | '/training-management'
   fileRoutesByTo: FileRoutesByTo
@@ -207,6 +225,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/consent-form'
     | '/player-manage'
+    | '/teams'
     | '/tournament-management'
     | '/training-management'
   id:
@@ -218,6 +237,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/consent-form/'
     | '/player-manage/'
+    | '/teams/'
     | '/tournament-management/'
     | '/training-management/'
   fileRoutesById: FileRoutesById
@@ -231,6 +251,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   ConsentFormIndexRoute: typeof ConsentFormIndexRoute
   PlayerManageIndexRoute: typeof PlayerManageIndexRoute
+  TeamsIndexRoute: typeof TeamsIndexRoute
   TournamentManagementIndexRoute: typeof TournamentManagementIndexRoute
   TrainingManagementIndexRoute: typeof TrainingManagementIndexRoute
 }
@@ -243,6 +264,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   ConsentFormIndexRoute: ConsentFormIndexRoute,
   PlayerManageIndexRoute: PlayerManageIndexRoute,
+  TeamsIndexRoute: TeamsIndexRoute,
   TournamentManagementIndexRoute: TournamentManagementIndexRoute,
   TrainingManagementIndexRoute: TrainingManagementIndexRoute,
 }
@@ -264,6 +286,7 @@ export const routeTree = rootRoute
         "/signup",
         "/consent-form/",
         "/player-manage/",
+        "/teams/",
         "/tournament-management/",
         "/training-management/"
       ]
@@ -288,6 +311,9 @@ export const routeTree = rootRoute
     },
     "/player-manage/": {
       "filePath": "player-manage/index.tsx"
+    },
+    "/teams/": {
+      "filePath": "teams/index.tsx"
     },
     "/tournament-management/": {
       "filePath": "tournament-management/index.tsx"

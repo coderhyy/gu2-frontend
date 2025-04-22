@@ -32,6 +32,17 @@ export function Header() {
         <Link className="[&.active]:font-bold [&.active]:text-primary" to="/">
           Home
         </Link>
+
+        {(authData?.user.member_type === MemberType.ADMIN ||
+          authData?.user.member_type === MemberType.COACH) && (
+          <Link
+            className="[&.active]:font-bold [&.active]:text-primary"
+            to="/teams"
+          >
+            Teams Management
+          </Link>
+        )}
+
         {(authData?.user.member_type === MemberType.ADMIN ||
           authData?.user.member_type === MemberType.COACH) && (
           <>
@@ -39,7 +50,7 @@ export function Header() {
               className="[&.active]:font-bold [&.active]:text-primary"
               to="/player-manage"
             >
-              Player Manage
+              Player Management
             </Link>
             <Link
               className="[&.active]:font-bold [&.active]:text-primary"

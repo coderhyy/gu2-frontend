@@ -1,7 +1,4 @@
-import {
-  updateProfileRequest,
-  uploadFileRequest,
-} from "@/api/actions/auth/auth.requests";
+import { updateProfileRequest } from "@/api/actions/auth/auth.requests";
 import { MemberType, UpdateProfileArgs } from "@/api/actions/auth/auth.types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -27,10 +24,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Save, User } from "lucide-react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+
+// import { PlayerFormModal } from "./-components/player-form-modal";
 
 export const Route = createFileRoute("/profile")({
   component: ProfilePage,
@@ -39,12 +38,13 @@ export const Route = createFileRoute("/profile")({
 const formSchema = z.object({
   consent_form_url: z.string().optional(),
   email: z.string().email({
-    message: "请输入有效的邮箱地址",
+    message: "Please enter a valid email address",
   }),
   name: z.string().min(2, {
-    message: "姓名至少需要2个字符",
+    message: "Name must be at least 2 characters",
   }),
   phone: z.string().optional(),
+  player_member_form: z.string().optional(),
 });
 
 function ProfilePage() {
@@ -60,26 +60,12 @@ function ProfilePage() {
     resolver: zodResolver(formSchema),
   });
 
-  const { mutateAsync: uploadFile } = useMutation({
-    mutationFn: uploadFileRequest,
-    onSuccess: (data) => {
-      form.setValue("consent_form_url", data.url);
-    },
-  });
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-      uploadFile(formData);
-    }
-  };
-
   const { mutateAsync: updateProfile } = useMutation({
     mutationFn: (args: UpdateProfileArgs) =>
       updateProfileRequest(authData?.user.id.toString() || "", args),
+    onError: () => {
+      toast.error("Failed to update profile");
+    },
     onSuccess: (data) => {
       toast.success("Profile updated successfully");
       setIsEditing(false);
@@ -96,19 +82,25 @@ function ProfilePage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    updateProfile({
-      ...values,
-      consent_form_url: values.consent_form_url || "",
-      phone: values.phone || "",
-    });
-  }
+  const onSubmit = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (values: any) => {
+      updateProfile({
+        ...values,
+        consent_form_url: values.consent_form_url || "",
+        phone: values.phone || "",
+      });
+    },
+    [updateProfile]
+  );
+
+  // const [playerFormOpen, setPlayerFormOpen] = useState(false);
 
   if (!authData) {
     return (
       <div className="container mx-auto py-8 px-4 text-center">
-        <h1 className="text-2xl font-bold mb-4">请先登录</h1>
-        <p>您需要登录后才能查看和编辑个人资料</p>
+        <h1 className="text-2xl font-bold mb-4">Please login first</h1>
+        <p>You need to login to view and edit your personal information</p>
       </div>
     );
   }
@@ -242,41 +234,27 @@ function ProfilePage() {
                   )}
                 />
 
-                <FormField
+                {/* <FormField
                   control={form.control}
                   name="consent_form_url"
                   render={() => (
                     <FormItem>
-                      <FormLabel>Upload Consent Form</FormLabel>
+                      <FormLabel> Consent Form</FormLabel>
                       <FormControl>
-                        {authData.user.consent_form_url ? (
-                          <Button asChild variant="outline">
-                            <a
-                              href={`${import.meta.env.VITE_API_BASE_URL}${
-                                authData.user.consent_form_url
-                              }`}
-                              target="_blank"
-                            >
-                              View consent form
-                            </a>
-                          </Button>
-                        ) : (
-                          <Input
-                            accept="application/pdf"
-                            disabled={!isEditing}
-                            onChange={handleFileChange}
-                            placeholder="Upload consent form"
-                            type="file"
-                          />
-                        )}
+                        <PlayerFormModal
+                          onOpenChange={setPlayerFormOpen}
+                          onSubmit={(data) =>
+                            onSubmit({
+                              player_member_form: JSON.stringify(data),
+                            })
+                          }
+                          open={playerFormOpen}
+                        />
                       </FormControl>
-                      <FormDescription>
-                        Upload consent form (PDF format)
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
 
                 {isEditing && (
                   <Button className="w-full" type="submit">
