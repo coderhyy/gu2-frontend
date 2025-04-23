@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -8,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Activity, ArrowRight, CirclePlay, Trophy, Users } from "lucide-react";
+import { Activity, ArrowRight, Trophy, Users } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -34,7 +33,7 @@ function Index() {
             Professional platform for managing rugby teams, players and
             tournaments
           </p>
-          <div className="flex justify-center mt-6">
+          {/* <div className="flex justify-center mt-6">
             <Button className="mr-4 bg-primary hover:bg-primary/90" size="lg">
               <CirclePlay className="mr-2 h-5 w-5" />
               Get Started
@@ -46,7 +45,7 @@ function Index() {
             >
               Learn More
             </Button>
-          </div>
+          </div> */}
         </div>
       </section>
 

@@ -14,7 +14,7 @@ import { useUserStore } from "@/stores/user-store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
-import { Facebook, Github, LoaderCircle, PartyPopper } from "lucide-react";
+import { LoaderCircle, PartyPopper } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -134,7 +134,7 @@ function SignInPage() {
         </form>
       </Form>
 
-      <div className="flex items-center gap-4 py-2">
+      {/* <div className="flex items-center gap-4 py-2">
         <hr className="flex-1" />
         <p className="shrink-0 text-tiny text-default-500">OR</p>
         <hr className="flex-1" />
@@ -149,11 +149,11 @@ function SignInPage() {
           <Github size={24} />
           Continue with Github
         </Button>
-      </div>
+      </div> */}
 
       <p className="text-center text-sm">
         Need to create an account?&nbsp;
-        <Link color="primary" to="/signup">
+        <Link className="text-primary" to="/signup">
           Sign Up
         </Link>
       </p>

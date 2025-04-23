@@ -1,5 +1,6 @@
 import { MemberType } from "@/api/actions/auth/auth.types";
 import { getCoachesQueryOptions } from "@/api/actions/coach/coach.options";
+import { sendNotificationRequest } from "@/api/actions/notify/notify.requests";
 import { getPlayersQueryOptions } from "@/api/actions/player/player.options";
 import { getTeamsOptions } from "@/api/actions/team/team.options";
 import {
@@ -33,6 +34,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/user-store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -46,7 +54,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
-  coach_ids: z.array(z.string()).optional(),
+  coach_ids: z.string().optional(),
   description: z.string(),
   founded_year: z.date(),
   home_venue: z.string(),
@@ -96,7 +104,7 @@ function EditTeamCell({ team }: { team: Team }) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
-      coach_ids: [],
+      coach_ids: team.coaches[0]?.coach_id.toString(),
       description: team.description,
       founded_year: new Date(team.founded_year),
       home_venue: team.home_venue,
@@ -107,7 +115,10 @@ function EditTeamCell({ team }: { team: Team }) {
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    mutateAsync(data as unknown as Team);
+    mutateAsync({
+      ...data,
+      coach_ids: [Number(data.coach_ids)],
+    } as unknown as Team);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -115,8 +126,31 @@ function EditTeamCell({ team }: { team: Team }) {
     console.error(error);
   };
 
+  const { mutateAsync: mutateSendNotification } = useMutation({
+    mutationFn: () =>
+      sendNotificationRequest({
+        content: `${team.team_name} has a competition on ${format(
+          new Date(team.founded_year),
+          "PPP"
+        )}`,
+        is_team_notification: true,
+        sender_id: team.coaches[0]?.coach_id || 0,
+        team_id: team.team_id,
+        title: "competition notification",
+      }),
+    onError: () => {
+      toast.error("Failed to send notification");
+    },
+    onSuccess: () => {
+      toast.success("Notification sent successfully");
+    },
+  });
+
   return (
     <div className="flex gap-2">
+      <Button onClick={() => mutateSendNotification()} variant="outline">
+        Send Notification
+      </Button>
       <Dialog onOpenChange={setIsOpen} open={isOpen}>
         <DialogTrigger asChild>
           <Button
@@ -265,7 +299,25 @@ function EditTeamCell({ team }: { team: Team }) {
                   <FormItem>
                     <FormLabel>Coaches</FormLabel>
                     <FormControl>
-                      <MultiSelect
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value?.toString() || ""}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select coach" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {coaches?.map((coach) => (
+                            <SelectItem
+                              key={coach.coach_id}
+                              value={coach.coach_id.toString()}
+                            >
+                              {coach.member.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {/* <MultiSelect
                         onChange={field.onChange}
                         options={
                           coaches?.map((coach) => ({
@@ -275,7 +327,7 @@ function EditTeamCell({ team }: { team: Team }) {
                         }
                         placeholder="Select coaches"
                         selected={field.value || []}
-                      />
+                      /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>

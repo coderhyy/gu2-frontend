@@ -343,7 +343,7 @@ function RouteComponent() {
         </form>
       </Form>
 
-      <div className="flex items-center gap-4 py-2">
+      {/* <div className="flex items-center gap-4 py-2">
         <hr className="flex-1" />
         <p className="shrink-0 text-tiny text-default-500">OR</p>
         <hr className="flex-1" />
@@ -358,11 +358,11 @@ function RouteComponent() {
           <Github size={24} />
           Continue with Github
         </Button>
-      </div>
+      </div> */}
 
       <p className="text-center text-sm">
         Need to create an account?&nbsp;
-        <Link color="primary" to="/signin">
+        <Link className="text-primary" to="/signin">
           Sign In
         </Link>
       </p>

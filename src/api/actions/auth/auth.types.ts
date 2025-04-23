@@ -1,4 +1,5 @@
 import { Coach } from "../coach/coach.types";
+import { Player } from "../player/player.types";
 
 export enum MemberType {
   ADMIN = "admin",
@@ -32,4 +33,5 @@ export interface User {
   member_type: MemberType;
   name: string;
   phone?: string;
+  player?: Player;
 }

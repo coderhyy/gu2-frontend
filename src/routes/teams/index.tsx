@@ -2,9 +2,8 @@ import { MemberType } from "@/api/actions/auth/auth.types";
 import { getCoachesQueryOptions } from "@/api/actions/coach/coach.options";
 import { getPlayersQueryOptions } from "@/api/actions/player/player.options";
 import { getTeamsOptions } from "@/api/actions/team/team.options";
-import { getTournamentsQueryOptions } from "@/api/actions/tournament/tournament.options";
-import { createTournamentRequest } from "@/api/actions/tournament/tournament.requests";
-import { Tournament } from "@/api/actions/tournament/tournament.types";
+import { createTeamRequest } from "@/api/actions/team/team.requests";
+import { Team } from "@/api/actions/team/team.types";
 import { DataTable } from "@/components/data-table";
 import { MultiSelect } from "@/components/multi-select";
 import { Button } from "@/components/ui/button";
@@ -30,6 +29,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { useUserStore } from "@/stores/user-store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,9 +50,9 @@ import { z } from "zod";
 
 import { columns } from "./-components/columns";
 const formSchema = z.object({
-  coach_ids: z.array(z.string()),
+  coach_ids: z.string().optional(),
   description: z.string(),
-  founded_year: z.number(),
+  founded_year: z.date(),
   home_venue: z.string(),
   logo_url: z.string(),
   player_ids: z.array(z.string()),
@@ -72,9 +78,9 @@ function RouteComponent() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     defaultValues: {
-      coach_ids: [],
+      coach_ids: "",
       description: "",
-      founded_year: 0,
+      founded_year: new Date(),
       home_venue: "",
       logo_url: "",
       player_ids: [],
@@ -83,21 +89,22 @@ function RouteComponent() {
     resolver: zodResolver(formSchema),
   });
 
-  const { isPending, mutateAsync: createTournament } = useMutation({
-    mutationFn: createTournamentRequest,
+  const { isPending, mutateAsync: createTeam } = useMutation({
+    mutationFn: createTeamRequest,
     onSettled: () => {
-      queryClient.invalidateQueries(
-        getTournamentsQueryOptions({ page: 1, size: 100 })
-      );
+      queryClient.invalidateQueries(getTeamsOptions());
     },
     onSuccess: () => {
-      toast.success("Tournament created successfully");
+      toast.success("Team created successfully");
       setIsCreateTournamentOpen(false);
     },
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    createTournament(data as unknown as Tournament);
+    createTeam({
+      ...data,
+      coach_ids: [Number(data.coach_ids)],
+    } as unknown as Team);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -253,17 +260,24 @@ function RouteComponent() {
                     <FormItem>
                       <FormLabel>Coaches</FormLabel>
                       <FormControl>
-                        <MultiSelect
-                          onChange={field.onChange}
-                          options={
-                            coaches?.map((coach) => ({
-                              label: coach.member.name,
-                              value: coach.coach_id.toString(),
-                            })) || []
-                          }
-                          placeholder="Select coaches"
-                          selected={field.value || []}
-                        />
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value?.toString() || ""}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select coach" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {coaches?.map((coach) => (
+                              <SelectItem
+                                key={coach.coach_id}
+                                value={coach.coach_id.toString()}
+                              >
+                                {coach.member.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
