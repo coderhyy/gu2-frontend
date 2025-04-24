@@ -1,3 +1,4 @@
+import { MemberType } from "@/api/actions/auth/auth.types";
 import {
   Card,
   CardContent,
@@ -6,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useUserStore } from "@/stores/user-store";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Activity, ArrowRight, Trophy, Users } from "lucide-react";
 
@@ -14,40 +16,155 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const authData = useUserStore((state) => state.authData);
+
+  // 获取用户角色类型和名称
+  const memberType = authData?.user.member_type;
+  const userName = authData?.user.name || "";
+
+  // 根据不同角色返回不同的 Hero 内容
+  const renderHeroSection = () => {
+    switch (memberType) {
+      case MemberType.ADMIN:
+        return (
+          <section
+            className="relative bg-cover bg-center h-[500px] flex items-center"
+            style={{
+              backgroundBlendMode: "overlay",
+              backgroundColor: "rgba(0,0,0,0.7)",
+              backgroundImage: "url('/hero-admin.jpg')",
+            }}
+          >
+            <div className="container mx-auto px-4 text-center text-white z-10">
+              <h1 className="text-5xl font-bold tracking-tight mb-4">
+                admin center
+              </h1>
+              <p className="text-xl max-w-2xl mx-auto mb-6">
+                welcome back, {userName}. you can manage all the functions of
+                the system.
+              </p>
+            </div>
+          </section>
+        );
+
+      case MemberType.CHAIRMAN:
+        return (
+          <section
+            className="relative bg-cover bg-center h-[500px] flex items-center"
+            style={{
+              backgroundBlendMode: "overlay",
+              backgroundColor: "rgba(0,0,0,0.7)",
+              backgroundImage: "url('/hero-chairman.jpg')",
+            }}
+          >
+            <div className="container mx-auto px-4 text-center text-white z-10">
+              <h1 className="text-5xl font-bold tracking-tight mb-4">
+                chairman center
+              </h1>
+              <p className="text-xl max-w-2xl mx-auto mb-6">
+                welcome back, {userName}. you can manage all the functions of
+                the system.
+              </p>
+            </div>
+          </section>
+        );
+
+      case MemberType.COACH:
+        return (
+          <section
+            className="relative bg-cover bg-center h-[500px] flex items-center"
+            style={{
+              backgroundBlendMode: "overlay",
+              backgroundColor: "rgba(0,0,0,0.7)",
+              backgroundImage: "url('/hero-coach.jpg')",
+            }}
+          >
+            <div className="container mx-auto px-4 text-center text-white z-10">
+              <h1 className="text-5xl font-bold tracking-tight mb-4">
+                coach center
+              </h1>
+              <p className="text-xl max-w-2xl mx-auto mb-6">
+                welcome back, {userName}. you can manage all the functions of
+                the system.
+              </p>
+            </div>
+          </section>
+        );
+
+      case MemberType.EVENT_ASSISTANT:
+        return (
+          <section
+            className="relative bg-cover bg-center h-[500px] flex items-center"
+            style={{
+              backgroundBlendMode: "overlay",
+              backgroundColor: "rgba(0,0,0,0.7)",
+              backgroundImage: "url('/hero-event.jpg')",
+            }}
+          >
+            <div className="container mx-auto px-4 text-center text-white z-10">
+              <h1 className="text-5xl font-bold tracking-tight mb-4">
+                event assistant center
+              </h1>
+              <p className="text-xl max-w-2xl mx-auto mb-6">
+                welcome back, {userName}. you can manage all the functions of
+                the system.
+              </p>
+            </div>
+          </section>
+        );
+
+      case MemberType.PLAYER:
+        return (
+          <section
+            className="relative bg-cover bg-center h-[500px] flex items-center"
+            style={{
+              backgroundBlendMode: "overlay",
+              backgroundColor: "rgba(0,0,0,0.7)",
+              backgroundImage: "url('/hero-player.jpg')",
+            }}
+          >
+            <div className="container mx-auto px-4 text-center text-white z-10">
+              <h1 className="text-5xl font-bold tracking-tight mb-4">
+                player center
+              </h1>
+              <p className="text-xl max-w-2xl mx-auto mb-6">
+                welcome back, {userName}. you can manage all the functions of
+                the system.
+              </p>
+            </div>
+          </section>
+        );
+
+      case MemberType.MEMBER:
+      default:
+        return (
+          <section
+            className="relative bg-cover bg-center h-[500px] flex items-center"
+            style={{
+              backgroundBlendMode: "overlay",
+              backgroundColor: "rgba(0,0,0,0.7)",
+              backgroundImage: "url('/hero-member.jpg')",
+            }}
+          >
+            <div className="container mx-auto px-4 text-center text-white z-10">
+              <h1 className="text-5xl font-bold tracking-tight mb-4">
+                rugby management system
+              </h1>
+              <p className="text-xl max-w-2xl mx-auto mb-6">
+                {userName ? `welcome back, ${userName}.` : ""}a professional
+                rugby club management platform, providing comprehensive support
+                for coaches and players.
+              </p>
+            </div>
+          </section>
+        );
+    }
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section with Background Image */}
-      <section
-        className="relative bg-cover bg-center h-[500px] flex items-center"
-        style={{
-          backgroundBlendMode: "overlay",
-          backgroundColor: "rgba(0,0,0,0.7)",
-          backgroundImage: "url('/hero1.jpg')",
-        }}
-      >
-        <div className="container mx-auto px-4 text-center text-white z-10">
-          <h1 className="text-5xl font-bold tracking-tight mb-4">
-            Simply Rugby Admin
-          </h1>
-          <p className="text-xl max-w-2xl mx-auto mb-8">
-            Professional platform for managing rugby teams, players and
-            tournaments
-          </p>
-          {/* <div className="flex justify-center mt-6">
-            <Button className="mr-4 bg-primary hover:bg-primary/90" size="lg">
-              <CirclePlay className="mr-2 h-5 w-5" />
-              Get Started
-            </Button>
-            <Button
-              className="border-white text-white hover:bg-white/20"
-              size="lg"
-              variant="outline"
-            >
-              Learn More
-            </Button>
-          </div> */}
-        </div>
-      </section>
+      {renderHeroSection()}
 
       {/* Feature Cards */}
       <section className="container mx-auto py-16 px-4">
@@ -133,7 +250,7 @@ function Index() {
         style={{
           backgroundBlendMode: "overlay",
           // backgroundColor: "rgba(255,255,255,0.9)",
-          backgroundImage: "url('/hero2.jpg')",
+          backgroundImage: "url('/hero-news.jpg')",
         }}
       >
         <div className="container mx-auto px-4">
