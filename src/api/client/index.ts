@@ -26,6 +26,7 @@ axiosInstance.interceptors.response.use(
     return response.data;
   },
   function (error) {
+    console.log(error);
     if (error.response.data.code === 401) {
       toast.error("Unauthorized. Please login again.");
       useUserStore.getState().setAuthData(null);

@@ -46,18 +46,6 @@ export function Header() {
 
         {(authData?.user.member_type === MemberType.ADMIN ||
           authData?.user.member_type === MemberType.COACH) && (
-          <Button asChild variant="outline">
-            <Link
-              className="[&.active]:font-bold [&.active]:text-primary"
-              to="/teams"
-            >
-              Teams Management
-            </Link>
-          </Button>
-        )}
-
-        {(authData?.user.member_type === MemberType.ADMIN ||
-          authData?.user.member_type === MemberType.COACH) && (
           <>
             <Button asChild variant="outline">
               <Link
@@ -73,6 +61,23 @@ export function Header() {
                 to="/training-management"
               >
                 Training Management
+              </Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link
+                className="[&.active]:font-bold [&.active]:text-primary"
+                to="/teams"
+              >
+                Teams Management
+              </Link>
+            </Button>
+
+            <Button asChild variant="outline">
+              <Link
+                className="[&.active]:font-bold [&.active]:text-primary"
+                to="/notify"
+              >
+                Notify Management
               </Link>
             </Button>
           </>
@@ -103,9 +108,9 @@ export function Header() {
             <DropdownMenuTrigger asChild>
               <Button className="relative" size="icon" variant="outline">
                 <Bell className="h-4 w-4" />
-                {notifications.length > 0 && (
+                {notifications?.length > 0 && (
                   <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0">
-                    {notifications.length}
+                    {notifications?.length}
                   </Badge>
                 )}
               </Button>

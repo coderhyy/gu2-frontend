@@ -1,6 +1,6 @@
 import { MemberType } from "@/api/actions/auth/auth.types";
 import { getCoachesQueryOptions } from "@/api/actions/coach/coach.options";
-import { sendNotificationRequest } from "@/api/actions/notify/notify.requests";
+// import { sendNotificationRequest } from "@/api/actions/notify/notify.requests";
 import { getPlayersQueryOptions } from "@/api/actions/player/player.options";
 import { getTeamsOptions } from "@/api/actions/team/team.options";
 import {
@@ -126,31 +126,31 @@ function EditTeamCell({ team }: { team: Team }) {
     console.error(error);
   };
 
-  const { mutateAsync: mutateSendNotification } = useMutation({
-    mutationFn: () =>
-      sendNotificationRequest({
-        content: `${team.team_name} has a competition on ${format(
-          new Date(team.founded_year),
-          "PPP"
-        )}`,
-        is_team_notification: true,
-        sender_id: team.coaches[0]?.coach_id || 0,
-        team_id: team.team_id,
-        title: "competition notification",
-      }),
-    onError: () => {
-      toast.error("Failed to send notification");
-    },
-    onSuccess: () => {
-      toast.success("Notification sent successfully");
-    },
-  });
+  // const { mutateAsync: mutateSendNotification } = useMutation({
+  //   mutationFn: () =>
+  //     sendNotificationRequest({
+  //       content: `${team.team_name} has a competition on ${format(
+  //         new Date(team.founded_year),
+  //         "PPP"
+  //       )}`,
+  //       is_team_notification: true,
+  //       sender_id: team.coaches[0]?.coach_id || 0,
+  //       team_id: team.team_id,
+  //       title: "competition notification",
+  //     }),
+  //   onError: () => {
+  //     toast.error("Failed to send notification");
+  //   },
+  //   onSuccess: () => {
+  //     toast.success("Notification sent successfully");
+  //   },
+  // });
 
   return (
     <div className="flex gap-2">
-      <Button onClick={() => mutateSendNotification()} variant="outline">
+      {/* <Button onClick={() => mutateSendNotification()} variant="outline">
         Send Notification
-      </Button>
+      </Button> */}
       <Dialog onOpenChange={setIsOpen} open={isOpen}>
         <DialogTrigger asChild>
           <Button

@@ -20,6 +20,7 @@ import { Route as TrainingManagementIndexImport } from './routes/training-manage
 import { Route as TournamentManagementIndexImport } from './routes/tournament-management/index'
 import { Route as TeamsIndexImport } from './routes/teams/index'
 import { Route as PlayerManageIndexImport } from './routes/player-manage/index'
+import { Route as NotifyIndexImport } from './routes/notify/index'
 import { Route as ConsentFormIndexImport } from './routes/consent-form/index'
 
 // Create/Update Routes
@@ -78,6 +79,12 @@ const PlayerManageIndexRoute = PlayerManageIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const NotifyIndexRoute = NotifyIndexImport.update({
+  id: '/notify/',
+  path: '/notify/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ConsentFormIndexRoute = ConsentFormIndexImport.update({
   id: '/consent-form/',
   path: '/consent-form/',
@@ -130,6 +137,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConsentFormIndexImport
       parentRoute: typeof rootRoute
     }
+    '/notify/': {
+      id: '/notify/'
+      path: '/notify'
+      fullPath: '/notify'
+      preLoaderRoute: typeof NotifyIndexImport
+      parentRoute: typeof rootRoute
+    }
     '/player-manage/': {
       id: '/player-manage/'
       path: '/player-manage'
@@ -170,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/consent-form': typeof ConsentFormIndexRoute
+  '/notify': typeof NotifyIndexRoute
   '/player-manage': typeof PlayerManageIndexRoute
   '/teams': typeof TeamsIndexRoute
   '/tournament-management': typeof TournamentManagementIndexRoute
@@ -183,6 +198,7 @@ export interface FileRoutesByTo {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/consent-form': typeof ConsentFormIndexRoute
+  '/notify': typeof NotifyIndexRoute
   '/player-manage': typeof PlayerManageIndexRoute
   '/teams': typeof TeamsIndexRoute
   '/tournament-management': typeof TournamentManagementIndexRoute
@@ -197,6 +213,7 @@ export interface FileRoutesById {
   '/signin': typeof SigninRoute
   '/signup': typeof SignupRoute
   '/consent-form/': typeof ConsentFormIndexRoute
+  '/notify/': typeof NotifyIndexRoute
   '/player-manage/': typeof PlayerManageIndexRoute
   '/teams/': typeof TeamsIndexRoute
   '/tournament-management/': typeof TournamentManagementIndexRoute
@@ -212,6 +229,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/consent-form'
+    | '/notify'
     | '/player-manage'
     | '/teams'
     | '/tournament-management'
@@ -224,6 +242,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/consent-form'
+    | '/notify'
     | '/player-manage'
     | '/teams'
     | '/tournament-management'
@@ -236,6 +255,7 @@ export interface FileRouteTypes {
     | '/signin'
     | '/signup'
     | '/consent-form/'
+    | '/notify/'
     | '/player-manage/'
     | '/teams/'
     | '/tournament-management/'
@@ -250,6 +270,7 @@ export interface RootRouteChildren {
   SigninRoute: typeof SigninRoute
   SignupRoute: typeof SignupRoute
   ConsentFormIndexRoute: typeof ConsentFormIndexRoute
+  NotifyIndexRoute: typeof NotifyIndexRoute
   PlayerManageIndexRoute: typeof PlayerManageIndexRoute
   TeamsIndexRoute: typeof TeamsIndexRoute
   TournamentManagementIndexRoute: typeof TournamentManagementIndexRoute
@@ -263,6 +284,7 @@ const rootRouteChildren: RootRouteChildren = {
   SigninRoute: SigninRoute,
   SignupRoute: SignupRoute,
   ConsentFormIndexRoute: ConsentFormIndexRoute,
+  NotifyIndexRoute: NotifyIndexRoute,
   PlayerManageIndexRoute: PlayerManageIndexRoute,
   TeamsIndexRoute: TeamsIndexRoute,
   TournamentManagementIndexRoute: TournamentManagementIndexRoute,
@@ -285,6 +307,7 @@ export const routeTree = rootRoute
         "/signin",
         "/signup",
         "/consent-form/",
+        "/notify/",
         "/player-manage/",
         "/teams/",
         "/tournament-management/",
@@ -308,6 +331,9 @@ export const routeTree = rootRoute
     },
     "/consent-form/": {
       "filePath": "consent-form/index.tsx"
+    },
+    "/notify/": {
+      "filePath": "notify/index.tsx"
     },
     "/player-manage/": {
       "filePath": "player-manage/index.tsx"

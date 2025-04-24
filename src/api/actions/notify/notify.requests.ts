@@ -13,3 +13,26 @@ export const getNotificationsRequest = async (playerId: number) => {
 
   return data;
 };
+
+export const getAllNotificationsRequest = async () => {
+  const { data } = await axiosInstance.get(`/api/v1/notify`);
+  return data;
+};
+
+export const deleteNotificationRequest = async (notificationId: number) => {
+  const { data } = await axiosInstance.delete(
+    `/api/v1/notify/${notificationId}`
+  );
+  return data;
+};
+
+export const updateNotificationRequest = async (
+  notificationId: number,
+  args: SendNotificationArgs
+) => {
+  const { data } = await axiosInstance.patch(
+    `/api/v1/notify/${notificationId}`,
+    args
+  );
+  return data;
+};
